@@ -35,4 +35,15 @@ for feature_name in CATEGORICAL_COLUMNS:
 for feature_name in NUMERICAL_COLUMNS:
     feature_columns.append(tf.feature_column.numeric_column(feature_name, dtype=tf.float32))
 
+# The following is an example of an input function
+def make_input_fn(data_df, label_df, num_epochs=10, shuffle=True, batch_size=32):
+    def input_function():
+        ds = tf.data.Dataset.from_tensor_slices((dict(data_df), label_df)) # create a tf.data.Dataset object with data and its labels
+        if shuffle:
+            ds = ds.shuffle(1000) # Randomize order of data
+        ds = ds.batch(batch_size).repeat(num_epochs) # Split data into batches of 32 and repeat number of epoch times
+        return ds
+    return input_function()
+
+
 
