@@ -25,3 +25,13 @@ model = tfd.HiddenMarkovModel(
     observation_distribution=observation_distribution,
     num_steps = 7 # num_steps is the number of days you want to predict
 ) 
+
+mean = model.mean()
+
+# Due to tensorflow working on a lower level, we need to evaluate in a session
+
+with tf.compat.v1.Session() as sess:
+    print(mean.numpy())
+
+# This prints [2.9999998 4.2       4.0799994 4.0919995 4.0907993 4.090919  4.090907 ]
+# these represents the predicted temperatures for the 7 days
